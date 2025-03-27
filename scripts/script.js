@@ -35,9 +35,16 @@ const operate = function (a, b, operator) {
 }
 
 let a, b, operator;
+let displayValue = 0;
 
-// Create the functions that populate the display when you click the digit 
-// buttons. You should store the content of the display (the number) in a 
-// variable for use in the next step.
+const display = document.querySelector(".display");
+const digits = document.querySelectorAll(".number-btn");
+display.textContent = displayValue;
 
-// button events
+digits.forEach((ele) => {
+    ele.addEventListener("click", () => {
+        displayValue *= 10;
+        displayValue += parseInt(ele.textContent);
+        display.textContent = displayValue;
+    });
+});

@@ -44,8 +44,15 @@ button {
 .equals-btn {
     background-color: yellow;
 }
+.operator-btn:hover,
+.equals-btn:hover {
+    background-color: #dd0;
+}
 .clear-btn {
     background-color: #a44;
     color: #eee;
     font-weight: bold;
+}
+.clear-btn:hover {
+    background-color: #933;
 }

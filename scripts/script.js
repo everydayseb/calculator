@@ -34,17 +34,53 @@ const operate = function (a, b, operator) {
     }
 }
 
-let a, b, operator;
+const update = function (display, value) {
+    display.textContent = value;
+}
+
+let a = null, b = null, operator;
 let displayValue = 0;
 
 const display = document.querySelector(".display");
 const digits = document.querySelectorAll(".number-btn");
+const operators = document.querySelectorAll(".operator-btn");
+const equals = document.querySelector(".equals-btn");
+
 display.textContent = displayValue;
 
-digits.forEach((ele) => {
-    ele.addEventListener("click", () => {
+digits.forEach((button) => {
+    button.addEventListener("click", () => {
         displayValue *= 10;
-        displayValue += parseInt(ele.textContent);
-        display.textContent = displayValue;
+        displayValue += parseInt(button.textContent);
+        update(display, displayValue);
     });
 });
+
+operators.forEach((button) => {
+    button.addEventListener("click", () => {
+        console.log("Operator button clicked");
+        if (button.classList.contains("add"))
+            operator = '+';
+        else if (button.classList.contains("subtract"))
+            operator = '-';
+        else if (button.classList.contains("multiply"))
+            operator = '*';
+        else if (button.classList.contains("divide"))
+            operator = '/';
+        else console.log("Unknown operator button clicked");
+        console.log("Operator: " + operator);
+
+        a = displayValue;
+        displayValue = null;
+
+    });
+});
+
+
+equals.addEventListener("click", () => {
+    console.log("Equals button clicked");
+    b = displayValue;
+
+    displayValue = operate(a, b, operator);
+    update(display, displayValue);
+})

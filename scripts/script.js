@@ -96,13 +96,18 @@ operators.forEach((button) => {
 
 equals.addEventListener("click", () => {
     console.log("Equals button clicked");
-    b = displayValue;
+    
+    if (a === null)
+        a = displayValue;
+    if (operator != null) {
+        b = displayValue;
 
-    displayValue = operate(a, b, operator);
-    update(display, displayValue);
+        displayValue = operate(a, b, operator);
+        update(display, displayValue);
 
-    operator = null;
-    operationsComplete = true;
+        operator = null;
+        operationsComplete = true;
+    }
 });
 
 clear.addEventListener("click", () => {

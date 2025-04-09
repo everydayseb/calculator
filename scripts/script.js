@@ -38,13 +38,14 @@ const update = function (display, value) {
     display.textContent = value;
 }
 
-let a = null, b = null, operator;
+let a = null, b = null, operator = null;
 let displayValue = 0;
 
 const display = document.querySelector(".display");
 const digits = document.querySelectorAll(".number-btn");
 const operators = document.querySelectorAll(".operator-btn");
 const equals = document.querySelector(".equals-btn");
+const clear = document.querySelector(".clear-btn");
 
 display.textContent = displayValue;
 
@@ -73,9 +74,10 @@ operators.forEach((button) => {
         a = displayValue;
         displayValue = null;
 
+        // do operations here? So 1 + 1 + 2 + 3 = shows 7, per odin requirements
+
     });
 });
-
 
 equals.addEventListener("click", () => {
     console.log("Equals button clicked");
@@ -83,4 +85,13 @@ equals.addEventListener("click", () => {
 
     displayValue = operate(a, b, operator);
     update(display, displayValue);
-})
+});
+
+clear.addEventListener("click", () => {
+    console.log("Clear button clicked");
+    a = null;
+    b = null;
+    operator = null;
+    displayValue = 0;
+    update(display, displayValue);
+});

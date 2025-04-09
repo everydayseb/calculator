@@ -40,6 +40,7 @@ const update = function (display, value) {
 
 let a = null, b = null, operator = null;
 let displayValue = 0;
+let operationsComplete = false;
 
 const display = document.querySelector(".display");
 const digits = document.querySelectorAll(".number-btn");
@@ -51,6 +52,10 @@ display.textContent = displayValue;
 
 digits.forEach((button) => {
     button.addEventListener("click", () => {
+        if (operationsComplete) {
+            displayValue = 0;
+            operationsComplete = false;
+        }
         displayValue *= 10;
         displayValue += parseInt(button.textContent);
         update(display, displayValue);
@@ -60,6 +65,16 @@ digits.forEach((button) => {
 operators.forEach((button) => {
     button.addEventListener("click", () => {
         console.log("Operator button clicked");
+
+
+        if (!operator) // if operator isn't set it's the first operation, otherwise we're chaining operations
+            a = displayValue;
+        else {
+            b = displayValue;
+            a = operate(a, b, operator);
+            displayValue = a;
+        }
+
         if (button.classList.contains("add"))
             operator = '+';
         else if (button.classList.contains("subtract"))
@@ -69,13 +84,13 @@ operators.forEach((button) => {
         else if (button.classList.contains("divide"))
             operator = '/';
         else console.log("Unknown operator button clicked");
+
         console.log("Operator: " + operator);
-
-        a = displayValue;
-        displayValue = null;
-
-        // do operations here? So 1 + 1 + 2 + 3 = shows 7, per odin requirements
-
+        
+        update(display, displayValue);
+        displayValue = null;        
+        
+        operationsComplete = false;
     });
 });
 
@@ -85,6 +100,9 @@ equals.addEventListener("click", () => {
 
     displayValue = operate(a, b, operator);
     update(display, displayValue);
+
+    operator = null;
+    operationsComplete = true;
 });
 
 clear.addEventListener("click", () => {

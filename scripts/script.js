@@ -35,12 +35,25 @@ const operate = function (a, b, operator) {
 }
 
 const update = function (display, value) {
-    display.textContent = value;
+    let displayFontSize = 52;
+    let maxDecimalPlaces = 9;
+    let displayString = value.toLocaleString(undefined, {maximumFractionDigits: maxDecimalPlaces})
+    
+    if (displayString.length > 10) {
+        for (let i = 0; i < displayString.length; i++) {
+            displayFontSize -= 2;
+        }
+    }
+    display.style.fontSize = displayFontSize < 28 ? "28px" : displayFontSize + "px";
+    display.textContent = displayString;
 }
 
 let a = null, b = null, operator = null;
 let displayValue = 0;
 let operationsComplete = false;
+
+let numDigits = 0;
+const maxDigits = 12;
 
 const display = document.querySelector(".display");
 const digits = document.querySelectorAll(".number-btn");
@@ -56,16 +69,19 @@ digits.forEach((button) => {
             displayValue = 0;
             operationsComplete = false;
         }
-        displayValue *= 10;
-        displayValue += parseInt(button.textContent);
-        update(display, displayValue);
+        if (numDigits < maxDigits) {
+            displayValue *= 10;
+            displayValue += parseInt(button.textContent);
+            update(display, displayValue);
+            numDigits++;
+        }
     });
 });
 
 operators.forEach((button) => {
     button.addEventListener("click", () => {
         console.log("Operator button clicked");
-
+        numDigits = 0; // about to enter a new number, reset digit counter
 
         if (!operator) // if operator isn't set it's the first operation, otherwise we're chaining operations
             a = displayValue;
@@ -96,6 +112,7 @@ operators.forEach((button) => {
 
 equals.addEventListener("click", () => {
     console.log("Equals button clicked");
+    numDigits = 0; // about to enter a new number, reset digit counter
     
     if (a === null)
         a = displayValue;
